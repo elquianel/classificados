@@ -16,6 +16,9 @@
 <div class="container">
     <h1>Meus Anúncios</h1>
 
+    <a href="novoAnuncio.php" class="btn btn-default">Novo anúncio</a><br>
+
+    <?php if($anuncios): ?>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -26,19 +29,23 @@
             </tr>
         </thead>
         <tbody>
-            <?php if($anuncios): ?>
                 <?php foreach($anuncios as $anuncio): ?>
                     <tr>
-                        <td><img src="assets/img/anuncios/<?= $anuncio['url']; ?>" border="0"></td>
+                        <td><img src="assets/img/anuncios/<?= ($anuncio['url_img'] != null) ? $anuncio['url_img'] : "default.png"; ?>" border="0" width="30"></td>
                         <td><?= $anuncio['titulo']; ?></td>
                         <td><?= $anuncio['valor']; ?></td>
-                        <td></td>
+                        <td>
+                            <a href="editarAnuncio.php?id=<?= $anuncio['id']; ?>" class="btn btn-default">Editar</a>
+                            <a href="excluirAnuncio.php?id=<?= $anuncio['id']; ?>" class="btn btn-danger">Excluir</a>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
-            <?php else: ?>
-            <?php endif; ?>
         </tbody>
     </table>
+    <?php else: ?>
+        <hr>
+        <h4>Você não possui anúncios no momento!</h4>
+    <?php endif; ?>
 </div>
 
 
