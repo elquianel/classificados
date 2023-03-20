@@ -5,7 +5,7 @@ class Anuncios{
         global $pdo;
         $anuncios = [];
 
-        $sql = $pdo->prepare("SELECT a.*, ai.id as id_foto, ai.id_anuncio as id_anuncio_foto, ai.url_img FROM anuncio a LEFT JOIN anuncios_imagens ai ON a.id = ai.id_anuncio WHERE id_usuario = :id_usuario");
+        $sql = $pdo->prepare("SELECT *, (SELECT anuncios_imagens.url_img FROM anuncios_imagens WHERE anuncios_imagens.id_anuncio = anuncio.id LIMIT 1) as url_img FROM anuncio WHERE id_usuario = :id_usuario");
         $sql->bindValue(":id_usuario", $_SESSION['cLogin']);
         $sql->execute();
 
@@ -83,14 +83,6 @@ class Anuncios{
 
         return $id_anuncio;
 
-    }
-
-    public function deletarFotoAnuncio($id_foto, $id_anuncio){
-        global $pdo;
-        $sql = $pdo->prepare("DELETE FROM anuncios_imagens WHERE id = :id_foto AND id_anuncio = :id_anuncio");
-        $sql->bindValue(":id_foto", $id_foto);
-        $sql->bindValue(":id_anuncio", $id_anuncio);
-        $sql->execute();
     }
 
     public function editarAnuncio($id_anuncio, $id_categoria, $titulo, $descricao, $valor, $status_produto, $fotos = null){

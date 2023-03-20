@@ -31,7 +31,7 @@
         <tbody>
                 <?php foreach($anuncios as $anuncio): ?>
                     <tr>
-                        <td><img src="assets/img/anuncios/<?= ($anuncio['url_img'] != null) ? $anuncio['url_img'] : "default.png"; ?>" border="0" width="30"></td>
+                        <td><img src="assets/img/anuncios/<?= ($anuncio['url_img']) ? $anuncio['url_img']:"default.png"; ?>" border="0" width="30"></td>
                         <td><?= $anuncio['titulo']; ?></td>
                         <td><?= $anuncio['valor']; ?></td>
                         <td>
