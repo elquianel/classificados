@@ -16,6 +16,21 @@ class Anuncios{
         return $anuncios;
     }
 
+    public function getAnuncio($id_anuncio){
+        global $pdo;
+        $anuncio = [];
+
+        $sql = $pdo->prepare("SELECT a.*, ai.id as id_foto, ai.id_anuncio as id_anuncio_foto, ai.url_img FROM anuncio a LEFT JOIN anuncios_imagens ai ON a.id = ai.id_anuncio WHERE a.id = :id_anuncio");
+        $sql->bindValue(":id_anuncio", $id_anuncio);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $anuncio = $sql->fetch();
+        }
+
+        return $anuncio;
+    }
+
     public function novoAnuncio($id_categoria, $titulo, $descricao, $valor, $status_produto, $url = null){
         global $pdo;
 
@@ -64,7 +79,7 @@ class Anuncios{
     public function editarAnuncio($id_anuncio, $id_categoria, $titulo, $descricao, $valor, $status_produto){
         global $pdo;
 
-        $sql = $pdo->prepare("UPDATE anuncio SET id_usuario = :id_usuario, id_categoria = :id_categoria, titulo = :titulo, descricao = :descricao, valor = :valor, status_produto = :status_produto WHERE id = :id_anuncio");
+        $sql = $pdo->prepare("UPDATE anuncio SET id_categoria = :id_categoria, titulo = :titulo, descricao = :descricao, valor = :valor, status_produto = :status_produto WHERE id = :id_anuncio");
         $sql->bindValue(":id_anuncio", $id_anuncio);
         $sql->bindValue(":id_categoria", $id_categoria);
         $sql->bindValue(":titulo", $titulo);
