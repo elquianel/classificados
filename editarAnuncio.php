@@ -16,6 +16,8 @@
     if(isset($_GET['id']) && !empty($_GET['id'])){
         $info = $a->getAnuncio($_GET['id']);
 
+        // echo "<pre>";var_dump($info['fotos']);exit;
+
         if(isset($_POST['titulo']) && !empty($_POST['titulo'])){
             $id_anuncio = $_GET['id'];
             $id_categoria = $_POST['id_categoria'];
@@ -23,9 +25,14 @@
             $valor = $_POST['valor'];
             $descricao = addslashes($_POST['descricao']);
             $status_produto = $_POST['status_produto'];
+            if(isset($_FILES['fotos'])){
+                $fotos = $_FILES['fotos'];
+            }else{
+                $fotos = [];
+            }
     
             if(!empty($id_anuncio) && !empty($titulo) && !empty($id_categoria) && !empty($status_produto)){
-                $a->editarAnuncio($id_anuncio, $id_categoria, $titulo, $descricao, $valor, $status_produto);
+                $a->editarAnuncio($id_anuncio, $id_categoria, $titulo, $descricao, $valor, $status_produto, $fotos);
                     ?>
                     <div class="alert alert-success">
                         Anúncio editado com sucesso!!
@@ -74,6 +81,27 @@
             <option value="1" <?= ($info['status_produto'] == 1) ? "selected":"";?>>Bom</option>
             <option value="2" <?= ($info['status_produto'] == 2) ? "selected":"";?>>Ótimo</option>
         </select>
+    </div>
+
+    <div class="form-group">
+        <label for="">Fotos do anúncio:</label>
+        <input type="file" name="fotos[]" multiple><br>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Fotos do anúncio</div>
+            <div class="panel-body">
+                <?php if(isset($info['fotos'])): ?>
+                    <?php foreach($info['fotos'] as $foto): ?>
+                        <div class="foto_item">
+                            <img src="assets/img/anuncios/<?= $foto['url_img']; ?>" class="img-thumbnail ">
+                            <a href="excluirImgAnuncio.php?idImg=<?= $foto['id']; ?>" class="btn btn-danger">Excluir Imagem</a>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <h4>Seu produto ainda não possui fotos</h4>
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
 	
 	<input class="btn btn-default" type="submit" value="Salvar">
